@@ -1,0 +1,26 @@
+# Docs: https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-module-mysql.html
+#   There are apparently some subtle schema differences between MySQL 8.x and MariaDB 10.4.x
+#   that may prevent the 'performance' metric from working as expected. I'm seeing errors in
+#   metricbeat logs indicating performance_schema tables may not be the same as MySQL 8.x.
+#   Example: performance_schema.events_statements_summary_by_digest column quantile_95
+#   does not exist in MariaDB 10.4.x
+#
+#   https://mariadb.com/kb/en/performance-schema-overview/
+#   https://mariadb.com/kb/en/performance-schema-events_statements_summary_by_digest-table/
+#
+#   MySQL 8.x+ has QUANTILE_95, QUANTILE_98, QUANTILE_99 columns:
+#   https://dev.mysql.com/doc/refman/8.0/en/statement-summary-tables.html
+#   # /etc/my.cnf
+#   [mysqld]
+#   performance_schema=ON
+#
+- module: mysql
+  metricsets:
+#   - galera_status
+#   - performance
+    - status
+  period: 10s
+
+  hosts: unix(/var/lib/mysql/mysql.sock)/
+  username: metricbeat
+  password: placeholder

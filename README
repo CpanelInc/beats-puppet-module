@@ -1,0 +1,4 @@
+Jamyn's metricbeat module updated a bit for Puppet 5 and later.
+
+It's currently sort of RedHat family centric (developed on and for CentOS).
+

@@ -1,0 +1,8 @@
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/master/filebeat-module-system.html
+- module: system
+  syslog:
+    enabled: true
+    # if var.paths is unset, Filebeat will choose based on your OS.
+    #var.paths:
+  auth:
+    enabled: true

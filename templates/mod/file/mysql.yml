@@ -1,0 +1,6 @@
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-module-mysql.html
+- module: mysql
+  error:
+    enabled: true
+  slowlog:
+    enabled: true

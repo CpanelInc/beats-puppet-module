@@ -1,0 +1,9 @@
+# Docs: https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-module-apache.html
+- module: apache
+  enabled: true
+  metricsets:
+    - status
+  period: 10s
+  hosts: ["https://<%= @fqdn %>/metricbeat-status"]
+  # we use self-signed certificates for our primary hostnames in many cases
+  ssl.verification_mode: "none"

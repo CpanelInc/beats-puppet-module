@@ -1,0 +1,60 @@
+---
+# metricbeat.yml - deployed by Puppet. Do not edit.
+logging.level: <%= @logging_level %>
+logging.metrics:
+  enabled: true
+  period: 1m
+logging.to_eventlog: false
+logging.to_files: true
+logging.to_stderr: false
+logging.to_syslog: false
+logging.files:
+  interval: 24h
+  keepfiles: 7
+  name: metricbeat
+  path: /var/log/metricbeat
+  permissions: 0600
+  rotateeverybytes: 10485760
+  rotateonstartup: true
+metricbeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: true
+  # Period on which files under path should be checked for changes
+  reload.period: <%= @reload_period %>
+metricbeat.max_start_delay: 10s
+output.elasticsearch:
+  backoff.init: <%= @elastic_backoff_init %>
+  backoff.max: <%= @elastic_backoff_max %>
+  bulk_max_size: <%= @elastic_bulk_max_size %>
+  compression_level: <%= @elastic_compression %>
+  hosts: ["<%= @elastic_host %>:<%= @elastic_port %>"]
+  index: "<%= @elastic_index %>"
+  max_retries: <%= @elastic_max_retries %>
+  protocol: "https"
+  #api_key: "id:api_key"
+  username: "<%= @elastic_user %>"
+  password: "<%= @elastic_pass %>"
+  ssl.certificate_authorities: ["<%= @ssl_path_ca %>"]
+  ssl.certificate: "<%= @ssl_path_cert %>"
+  ssl.key: "<%= @ssl_path_key %>"
+  timeout: <%= @elastic_timeout %>
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+queue.mem:
+  events: <%= @queue_events %>
+  flush.min_events: <%= @queue_flush_min %>
+  flush.timeout: <%= @queue_flush_timeout %>
+setup.ilm.enabled: false
+setup.ilm.check_exists: false
+setup.kibana:
+setup.template.enabled: false
+setup.template.name: "metricbeat"
+setup.template.overwrite: false
+setup.template.pattern: "metricbeat-*"
+setup.template.settings:
+  index.number_of_shards: 2
+  index.codec: best_compression
+  #_source.enabled: false
